@@ -1,0 +1,104 @@
+/* ==============================
+   REGISTER PAGE STYLES
+   ============================== */
+
+/* Inherits all auth-page styles from login.css */
+
+.auth-card.register-card {
+  max-width: 520px;
+}
+
+.password-strength {
+  margin-top: 8px;
+}
+
+.strength-bar {
+  height: 3px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+
+.strength-fill {
+  height: 100%;
+  border-radius: 2px;
+  width: 0%;
+  transition: width 0.4s ease, background 0.4s ease;
+}
+
+.strength-fill.weak {
+  width: 25%;
+  background: #ef4444;
+}
+
+.strength-fill.fair {
+  width: 50%;
+  background: #f59e0b;
+}
+
+.strength-fill.good {
+  width: 75%;
+  background: #3b82f6;
+}
+
+.strength-fill.strong {
+  width: 100%;
+  background: #10b981;
+}
+
+.strength-label {
+  font-size: 0.75rem;
+  color: #4a5568;
+}
+
+.strength-label.weak { color: #ef4444; }
+.strength-label.fair { color: #f59e0b; }
+.strength-label.good { color: #3b82f6; }
+.strength-label.strong { color: #10b981; }
+
+.terms-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 24px;
+  margin-top: 4px;
+}
+
+.terms-checkbox {
+  width: 16px;
+  height: 16px;
+  margin-top: 2px;
+  accent-color: #6c63ff;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.terms-label {
+  font-size: 0.85rem;
+  color: #8892b0;
+  line-height: 1.5;
+  cursor: pointer;
+}
+
+.terms-label a {
+  color: #6c63ff;
+  font-weight: 500;
+}
+
+.terms-label a:hover {
+  color: #a855f7;
+  text-decoration: underline;
+}
+
+.name-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 480px) {
+  .name-grid {
+    grid-template-columns: 1fr;
+  }
+}

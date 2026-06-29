@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard — Music Collaboration Studio</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+</head>
+<body>
+<div class="dash-layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="sidebar-logo-icon">🎵</div>
+      <span>MCS Studio</span>
+    </div>
+
+    <nav class="sidebar-nav">
+      <span class="nav-section-label">Main</span>
+      <a class="nav-item active" data-page="overview" onclick="showPage('overview',this)">
+        <span class="nav-icon">🏠</span> Dashboard
+      </a>
+      <a class="nav-item" data-page="upload" onclick="showPage('upload',this)">
+        <span class="nav-icon">⬆️</span> Upload Audio
+      </a>
+      <a class="nav-item" data-page="projects" onclick="showPage('projects',this)">
+        <span class="nav-icon">🎵</span> Projects
+        <span class="nav-badge" id="projectCount">0</span>
+      </a>
+
+      <span class="nav-section-label">Collaboration</span>
+      <a class="nav-item" data-page="collaboration" onclick="showPage('collaboration',this)">
+        <span class="nav-icon">👥</span> Collaboration
+      </a>
+      <a class="nav-item" data-page="history" onclick="showPage('history',this)">
+        <span class="nav-icon">🕐</span> Version History
+      </a>
+      <a class="nav-item" data-page="royalty" onclick="showPage('royalty',this)">
+        <span class="nav-icon">💰</span> Royalty Split
+      </a>
+
+      <span class="nav-section-label">Account</span>
+      <a class="nav-item" data-page="settings" onclick="showPage('settings',this)">
+        <span class="nav-icon">⚙️</span> Settings
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="sidebar-avatar" id="sidebarAvatar">?</div>
+        <div class="sidebar-user-info">
+          <div class="sidebar-user-name" id="sidebarName">Loading...</div>
+          <div class="sidebar-user-role">Artist</div>
+        </div>
+      </div>
+      <button class="sidebar-logout" onclick="handleLogout()">
+        <span>🚪</span> Log Out
+      </button>
+    </div>
+  </aside>
+
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+  <!-- MAIN -->
+  <main class="dash-main">
+    <!-- TOP NAV -->
+    <div class="dash-topnav">
+      <button class="topnav-btn" onclick="toggleSidebar()" style="display:flex;">☰</button>
+      <div class="dash-search">
+        <span class="dash-search-icon">🔍</span>
+        <input type="text" placeholder="Search projects, files..." id="globalSearch" />
+      </div>
+      <div class="dash-topnav-right">
+        <button class="topnav-btn" title="Notifications">
+          🔔
+          <span class="topnav-notif-dot"></span>
+        </button>
+        <button class="topnav-btn" title="Help">❓</button>
+        <div class="topnav-avatar" id="topnavAvatar" title="Profile">?</div>
+      </div>
+    </div>
+
+    <div class="dash-content">
+
+      <!-- ============ PAGE: OVERVIEW ============ -->
+      <div class="dash-page active" id="page-overview">
+        <div class="dash-page-header">
+          <div>
+            <h1 class="dash-page-title">Welcome back, <span id="greetName">Artist</span> 👋</h1>
+            <p class="dash-page-subtitle">Here's what's happening with your music today.</p>
+          </div>
+          <button class="dash-btn-primary" onclick="showPage('upload', document.querySelector('[data-page=upload]'))">
+            + New Upload
+          </button>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card" style="--card-color:#6c63ff;">
+            <div class="stat-header">
+              <span class="stat-label">Total Projects</span>
+              <div class="stat-icon" style="background:rgba(108,99,255,0.12);">🎵</div>
+            </div>
+            <div class="stat-value" id="statProjects">0</div>
+            <div class="stat-change up">↑ 2 this month</div>
+          </div>
+          <div class="stat-card" style="--card-color:#a855f7;">
+            <div class="stat-header">
+              <span class="stat-label">Audio Files</span>
+              <div class="stat-icon" style="background:rgba(168,85,247,0.12);">🎧</div>
+            </div>
+            <div class="stat-value" id="statFiles">0</div>
+            <div class="stat-change up">↑ 5 this week</div>
+          </div>
+          <div class="stat-card" style="--card-color:#38bdf8;">
+            <div class="stat-header">
+              <span class="stat-label">Collaborators</span>
+              <div class="stat-icon" style="background:rgba(56,189,248,0.12);">👥</div>
+            </div>
+            <div class="stat-value" id="statCollabs">0</div>
+            <div class="stat-change up">↑ 1 new</div>
+          </div>
+          <div class="stat-card" style="--card-color:#34d399;">
+            <div class="stat-header">
+              <span class="stat-label">Versions Saved</span>
+              <div class="stat-icon" style="background:rgba(52,211,153,0.12);">🕐</div>
+            </div>
+            <div class="stat-value" id="statVersions">0</div>
+            <div class="stat-change up">↑ 3 today</div>
+          </div>
+        </div>
+
+        <div class="charts-row">
+          <div class="chart-card">
+            <div class="chart-header">
+              <span class="chart-title">Upload Activity</span>
+              <div class="chart-period">
+                <button class="chart-period-btn active">7d</button>
+                <button class="chart-period-btn">30d</button>
+                <button class="chart-period-btn">90d</button>
+              </div>
+            </div>
+            <canvas id="activityChart" height="200"></canvas>
+          </div>
+          <div class="chart-card">
+            <div class="chart-header">
+              <span class="chart-title">File Types</span>
+            </div>
+            <canvas id="typeChart" height="200"></canvas>
+          </div>
+        </div>
+
+        <div class="charts-row" style="grid-template-columns:1fr 1fr;">
+          <div class="projects-card">
+            <div class="projects-card-header">
+              <span class="card-title">Recent Projects</span>
+              <span class="card-link" onclick="showPage('projects', document.querySelector('[data-page=projects]'))">View all →</span>
+            </div>
+            <table class="projects-table">
+              <thead>
+                <tr>
+                  <th>Project</th>
+                  <th>Status</th>
+                  <th>Updated</th>
+                </tr>
+              </thead>
+              <tbody id="recentProjectsBody">
+                <tr><td colspan="3" style="color:#4a5568;text-align:center;padding:24px;">No projects yet. <span style="color:#6c63ff;cursor:pointer;" onclick="showPage('upload',document.querySelector('[data-page=upload]'))">Upload your first track →</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="projects-card">
+            <div class="projects-card-header">
+              <span class="card-title">Recent Activity</span>
+            </div>
+            <div class="activity-feed" id="activityFeed">
+              <div class="activity-item">
+                <div class="activity-icon">🎵</div>
+                <div class="activity-text">
+                  <div class="activity-desc">Welcome to <strong>Music Collaboration Studio!</strong></div>
+                  <div class="activity-time">Just now</div>
+                </div>
+              </div>
+              <div class="activity-item">
+                <div class="activity-icon">👤</div>
+                <div class="activity-text">
+                  <div class="activity-desc">Your account was <strong>created successfully</strong></div>
+                  <div class="activity-time">Today</div>
+                </div>
+              </div>
+              <div class="activity-item">
+                <div class="activity-icon">⬆️</div>
+                <div class="activity-text">
+                  <div class="activity-desc">Upload your first audio file to get started</div>
+                  <div class="activity-time">Tip</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ PAGE: UPLOAD ============ -->
+      <div class="dash-page" id="page-upload">
+        <div class="dash-page-header">
+          <div>
+            <h1 class="dash-page-title">Upload Audio</h1>
+            <p class="dash-page-subtitle">Supports WAV, MP3, and AIFF — up to 200MB per file.</p>
+          </div>
+        </div>
+
+        <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)">
+          <span class="upload-icon">🎵</span>
+          <h3 class="upload-title">Drop your audio file here</h3>
+          <p class="upload-subtitle">or click to browse from your computer</p>
+          <div class="upload-formats">
+            <span class="format-tag">WAV</span>
+            <span class="format-tag">MP3</span>
+            <span class="format-tag">AIFF</span>
+          </div>
+          <input type="file" id="fileInput" accept=".wav,.mp3,.aiff,.aif,audio/*" onchange="handleFileSelect(event)" />
+        </div>
+
+        <div class="upload-preview" id="uploadPreview">
+          <div class="preview-header">
+            <div class="preview-icon">🎵</div>
+            <div>
+              <div class="preview-file-name" id="previewName">filename.wav</div>
+              <div class="preview-file-size" id="previewSize">0 MB</div>
+            </div>
+          </div>
+          <audio controls class="preview-audio" id="previewAudio"></audio>
+          <div class="upload-progress" id="uploadProgress">
+            <div class="upload-progress-bar" id="uploadProgressBar"></div>
+          </div>
+        </div>
+
+        <div class="upload-form-card">
+          <h3 class="upload-form-title">Track Details</h3>
+          <div class="form-row">
+            <div class="dash-form-group">
+              <label class="dash-form-label">Track Title</label>
+              <input type="text" class="dash-form-control" id="trackTitle" placeholder="e.g. Summer Vibes — Verse 1" />
+            </div>
+            <div class="dash-form-group">
+              <label class="dash-form-label">Project</label>
+              <select class="dash-form-control" id="projectSelect">
+                <option value="">— Select a project —</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="dash-form-group">
+              <label class="dash-form-label">Genre</label>
+              <select class="dash-form-control" id="trackGenre">
+                <option value="">Select genre</option>
+                <option>Hip-Hop</option>
+                <option>R&B</option>
+                <option>Pop</option>
+                <option>Electronic</option>
+                <option>Jazz</option>
+                <option>Rock</option>
+                <option>Classical</option>
+                <option>Afrobeats</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="dash-form-group">
+              <label class="dash-form-label">BPM</label>
+              <input type="number" class="dash-form-control" id="trackBpm" placeholder="e.g. 120" min="40" max="300" />
+            </div>
+          </div>
+          <div class="dash-form-group">
+            <label class="dash-form-label">Notes</label>
+            <textarea class="dash-form-control" id="trackNotes" rows="3" placeholder="Add any notes about this version..."></textarea>
+          </div>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;">
+            <button class="dash-btn-primary" onclick="submitUpload()">⬆ Upload File</button>
+            <button class="dash-btn-secondary" onclick="clearUpload()">✕ Clear</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ PAGE: PROJECTS ============ -->
+      <div class="dash-page" id="page-projects">
+        <div class="dash-page-header">
+          <div>
+            <h1 class="dash-page-title">My Projects</h1>
+            <p class="dash-page-subtitle">Manage all your music projects in one place.</p>
+          </div>
+          <button class="dash-btn-primary" onclick="openNewProjectModal()">+ New Project</button>
+        </div>
+
+        <div id="projectsGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px;"></div>
+      </div>
+
+      <!-- ============ PAGE: COLLABORATION ============ -->
+      <div class="dash-page" id="page-collaboration">
+        <div class="dash-page-header">
+          <div>
+            <h1 class="dash-page-title">Collaboration</h1>
+            <p class="dash-page-subtitle">Work together in real time on your music projects.</p>
+          </div>
+          <div style="display:flex;gap:10px;align-items:center;">
+            <select class="dash-form-control" id="collabProjectSelect" style="min-width:200px;" onchange="loadCollabProject()"></select>
+          </div>
+        </div>
+
+        <div class="collab-layout">
+          <div style="display:flex;flex-direction:column;gap:20px;">
+            <!-- Chat -->
+            <div class="collab-panel">
+              <div class="collab-panel-title">💬 Project Chat</div>
+              <div class="chat-messages" id="chatMessages">
+                <div style="text-align:center;color:#4a5568;font-size:0.85rem;padding:20px;">Select a project to start chatting</div>
+              </div>
+              <div class="chat-input-row">
+                <input type="text" class="chat-input" id="chatInput" placeholder="Type a message..." onkeypress="if(event.key==='Enter') sendComment()" />
+                <button class="chat-send" onclick="sendComment()">✈</button>
+              </div>
+            </div>
+
+            <!-- Tasks -->
+            <div class="collab-panel">
+              <div class="collab-panel-title">✅ Task List</div>
+              <div class="task-list" id="taskList">
+                <div style="color:#4a5568;font-size:0.85rem;text-align:center;padding:12px;">No tasks yet</div>
+              </div>
+              <div style="display:flex;gap:10px;">
+                <input type="text" class="chat-input" id="newTaskInput" placeholder="Add a task..." style="flex:1;" onkeypress="if(event.key==='Enter') addTask()" />
+                <input type="text" class="chat-input" id="newTaskAssignee" placeholder="Assign to" style="width:120px;" />
+                <button class="chat-send" onclick="addTask()">+</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Members -->
+          <div>
+            <div class="collab-panel" style="margin-bottom:20px;">
+              <div class="collab-panel-title">👥 Members</div>
+              <div class="member-list" id="memberList">
+                <div style="color:#4a5568;font-size:0.85rem;text-align:center;padding:12px;">Select a project</div>
+              </div>
+              <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                <input type="email" class="chat-input" id="inviteEmail" placeholder="Invite by email" style="flex:1;" />
+                <button class="dash-btn-primary" style="padding:10px 16px;font-size:0.85rem;" onclick="inviteMember()">Invite</button>
+              </div>
+            </div>
+
+            <div class="collab-panel">
+              <div class="collab-panel-title">📊 Project Info</div>
+              <div id="collabProjectInfo" style="color:#4a5568;font-size:0.85rem;">Select a project to see details.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ PAGE: VERSION HISTORY ============ -->
+      <div class="dash-page" id="page-history">
+        <div class="dash-page-header">
+          <div>
+            <h1 class="dash-page-title">Version History</h1>
+            <p class="dash-page-subtitle">Every saved version of your projects.</p>
+          </div>
+          <div style="display:flex;gap:10px;align-items:center;">
+            <select class="dash-form-control" id="historyProjectSelect" style="min-width:200px;" onchange="loadVersionHistory()"></select>
+            <button class="dash-btn-primary" onclick="saveVersion()">💾 Save Version</button>
+          </div>
+        </div>
+
+        <div id="versionsContainer">
+          <div style="color:#4a5568;text-align:center;padding:48px;font-size:0.9rem;">Select a project to view version history.</div>
+        </div>
+      </div>
+
+      <!-- ============ PAGE: ROYALTY ============ -->
+      <div class="dash-page" id="page-royalty">
+        <div class="dash-page-header">
+          <div>
+            <h1 class="dash-page-title">Royalty Split</h1>
+            <p class="dash-page-subtitle">Define contributor percentages and generate your agreement.</p>
+          </div>
+          <select class="dash-form-control" id="royaltyProjectSelect" style="min-width:220px;" onchange="loadRoyalty()"></select>
+        </div>
+
+        <div class="royalty-total-bar">
+          <div>
+            <div class="royalty-total-label">Total Allocated</div>
+            <div class="royalty-bar-visual" style="width:200px;">
+              <div class="royalty-bar-fill" id="royaltyBarFill" style="width:0%;"></div>
+            </div>
+          </div>
+          <div class="royalty-total-value" id="royaltyTotal">0%</div>
+        </div>
+
+        <div id="contributorsContainer"></div>
+
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:8px;">
+          <button class="dash-btn-secondary" onclick="addContributor()">+ Add Contributor</button>
+          <button class="dash-btn-primary" onclick="saveRoyalty()">💾 Save Split</button>
+          <button class="dash-btn-primary" onclick="generateAgreement()">📄 Generate Agreement</button>
+        </div>
+
+        <div class="agreement-preview" id="agreementPreview"></div>
+      </div>
+
+      <!-- ============ PAGE: SETTINGS ============ -->
+      <div class="dash-page" id="page-settings">
+        <div class="dash-page-header">
+          <div>
+            <h1 class="dash-page-title">Settings</h1>
+            <p class="dash-page-subtitle">Manage your account and preferences.</p>
+          </div>
+        </div>
+        <div class="settings-grid">
+          <div class="settings-nav">
+            <div class="settings-nav-item active" onclick="switchSettingsTab(this,'profile')">👤 Profile</div>
+            <div class="settings-nav-item" onclick="switchSettingsTab(this,'security')">🔒 Security</div>
+            <div class="settings-nav-item" onclick="switchSettingsTab(this,'notifications')">🔔 Notifications</div>
+          </div>
+          <div class="settings-panel">
+            <div id="settings-profile">
+              <div class="settings-section-title">Profile Information</div>
+              <div class="settings-avatar-row">
+                <div class="settings-avatar-big" id="settingsAvatar">?</div>
+                <div class="settings-avatar-info">
+                  <div class="sidebar-user-name" id="settingsName">Loading...</div>
+                  <p id="settingsEmail" style="color:#8892b0;font-size:0.875rem;">...</p>
+                </div>
+              </div>
+              <div class="dash-form-group">
+                <label class="dash-form-label">Display Name</label>
+                <input type="text" class="dash-form-control" id="settingsNameInput" placeholder="Your name" />
+              </div>
+              <div class="dash-form-group">
+                <label class="dash-form-label">Bio</label>
+                <textarea class="dash-form-control" id="settingsBio" rows="3" placeholder="Tell other collaborators about yourself..."></textarea>
+              </div>
+              <div class="dash-form-group">
+                <label class="dash-form-label">Role</label>
+                <select class="dash-form-control" id="settingsRole">
+                  <option value="artist">Artist</option>
+                  <option value="producer">Producer</option>
+                  <option value="engineer">Sound Engineer</option>
+                </select>
+              </div>
+              <button class="dash-btn-primary" onclick="saveSettings()">Save Changes</button>
+            </div>
+            <div id="settings-security" style="display:none;">
+              <div class="settings-section-title">Security Settings</div>
+              <div class="dash-form-group">
+                <label class="dash-form-label">Current Password</label>
+                <input type="password" class="dash-form-control" placeholder="Enter current password" />
+              </div>
+              <div class="dash-form-group">
+                <label class="dash-form-label">New Password</label>
+                <input type="password" class="dash-form-control" placeholder="New password (min 6 chars)" />
+              </div>
+              <div class="dash-form-group">
+                <label class="dash-form-label">Confirm New Password</label>
+                <input type="password" class="dash-form-control" placeholder="Repeat new password" />
+              </div>
+              <button class="dash-btn-primary" onclick="showToast('Password update coming soon','info')">Update Password</button>
+            </div>
+            <div id="settings-notifications" style="display:none;">
+              <div class="settings-section-title">Notification Preferences</div>
+              <p style="color:#8892b0;font-size:0.875rem;margin-bottom:24px;">Choose what activity triggers a notification.</p>
+              <div style="display:flex;flex-direction:column;gap:16px;">
+                <label style="display:flex;align-items:center;gap:12px;cursor:pointer;">
+                  <input type="checkbox" checked style="accent-color:#6c63ff;width:16px;height:16px;" />
+                  <span style="font-size:0.9rem;color:#8892b0;">New collaborator joins project</span>
+                </label>
+                <label style="display:flex;align-items:center;gap:12px;cursor:pointer;">
+                  <input type="checkbox" checked style="accent-color:#6c63ff;width:16px;height:16px;" />
+                  <span style="font-size:0.9rem;color:#8892b0;">New comment on my project</span>
+                </label>
+                <label style="display:flex;align-items:center;gap:12px;cursor:pointer;">
+                  <input type="checkbox" style="accent-color:#6c63ff;width:16px;height:16px;" />
+                  <span style="font-size:0.9rem;color:#8892b0;">Version saved by collaborator</span>
+                </label>
+                <label style="display:flex;align-items:center;gap:12px;cursor:pointer;">
+                  <input type="checkbox" checked style="accent-color:#6c63ff;width:16px;height:16px;" />
+                  <span style="font-size:0.9rem;color:#8892b0;">Royalty agreement generated</span>
+                </label>
+              </div>
+              <button class="dash-btn-primary" style="margin-top:24px;" onclick="showToast('Preferences saved','success')">Save Preferences</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /dash-content -->
+  </main>
+</div>
+
+<!-- New Project Modal -->
+<div id="projectModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:9999;backdrop-filter:blur(6px);align-items:center;justify-content:center;">
+  <div style="background:#0f1320;border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:36px;width:100%;max-width:480px;margin:20px;box-shadow:0 24px 64px rgba(0,0,0,0.6);">
+    <h2 style="font-family:'Space Grotesk',sans-serif;font-size:1.4rem;font-weight:800;color:#f0f4ff;margin-bottom:24px;">New Project</h2>
+    <div class="dash-form-group">
+      <label class="dash-form-label">Project Title *</label>
+      <input type="text" class="dash-form-control" id="newProjectTitle" placeholder="e.g. Summer EP Track 1" />
+    </div>
+    <div class="dash-form-group">
+      <label class="dash-form-label">Description</label>
+      <textarea class="dash-form-control" id="newProjectDesc" rows="2" placeholder="Briefly describe this project..."></textarea>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+      <div class="dash-form-group">
+        <label class="dash-form-label">Genre</label>
+        <select class="dash-form-control" id="newProjectGenre">
+          <option value="">Select</option>
+          <option>Hip-Hop</option><option>R&B</option><option>Pop</option>
+          <option>Electronic</option><option>Jazz</option><option>Rock</option>
+          <option>Classical</option><option>Afrobeats</option><option>Other</option>
+        </select>
+      </div>
+      <div class="dash-form-group">
+        <label class="dash-form-label">BPM</label>
+        <input type="number" class="dash-form-control" id="newProjectBpm" placeholder="120" min="40" max="300" />
+      </div>
+    </div>
+    <div style="display:flex;gap:12px;margin-top:8px;">
+      <button class="dash-btn-primary" style="flex:1;" onclick="createProject()">Create Project</button>
+      <button class="dash-btn-secondary" onclick="closeProjectModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast container -->
+<div class="toast-container" id="toastContainer"></div>
+
+<script src="js/dashboard.js"></script>
+</body>
+</html>

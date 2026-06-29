@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact — Music Collaboration Studio</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <nav class="navbar" id="navbar">
+    <a href="index.html" class="nav-logo"><div class="nav-logo-icon">🎵</div><span>MCS</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="index.html#features">Features</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <div class="nav-cta">
+      <a href="login.html" class="btn-nav-login">Log In</a>
+      <a href="register.html" class="btn-nav-register">Get Started</a>
+    </div>
+  </nav>
+
+  <section style="padding:160px 5% 100px;background:linear-gradient(135deg,#0f0c29,#1a1a3e,#0a0e1a);">
+    <div class="section-header">
+      <div class="section-eyebrow">Get In Touch</div>
+      <h1 class="section-title">We'd Love to <span>Hear From You</span></h1>
+      <p class="section-desc">Questions, feedback, partnerships — our team responds within 24 hours.</p>
+    </div>
+    <div class="contact-inner" style="max-width:1100px;margin:0 auto;">
+      <div class="contact-info">
+        <h3>Contact Information</h3>
+        <p>Reach out directly or fill in the form. We're a team of musicians, so we genuinely care about your feedback.</p>
+        <div class="contact-items">
+          <div class="contact-item"><div class="contact-icon">📧</div><div><div class="contact-item-label">Email</div><div class="contact-item-value">hello@musiccollab.studio</div></div></div>
+          <div class="contact-item"><div class="contact-icon">📞</div><div><div class="contact-item-label">Phone</div><div class="contact-item-value">+1 (555) 240-8800</div></div></div>
+          <div class="contact-item"><div class="contact-icon">📍</div><div><div class="contact-item-label">Location</div><div class="contact-item-value">Los Angeles, CA 90028</div></div></div>
+          <div class="contact-item"><div class="contact-icon">⏰</div><div><div class="contact-item-label">Support Hours</div><div class="contact-item-value">Mon–Fri, 9AM–6PM PST</div></div></div>
+        </div>
+        <div class="contact-map">📍 Los Angeles, California</div>
+      </div>
+      <div class="contact-form-wrap">
+        <h3>Send a Message</h3>
+        <form onsubmit="event.preventDefault();document.getElementById('contactSuccess').style.display='block';this.reset();">
+          <div class="form-group"><label class="form-label" for="cName">Full Name</label><input type="text" id="cName" class="form-control" placeholder="Your name" required /></div>
+          <div class="form-group"><label class="form-label" for="cEmail">Email Address</label><input type="email" id="cEmail" class="form-control" placeholder="your@email.com" required /></div>
+          <div class="form-group"><label class="form-label" for="cSubject">Subject</label><input type="text" id="cSubject" class="form-control" placeholder="How can we help?" /></div>
+          <div class="form-group"><label class="form-label" for="cMsg">Message</label><textarea id="cMsg" class="form-control" rows="5" placeholder="Tell us what's on your mind..." required></textarea></div>
+          <div id="contactSuccess" style="display:none;background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.25);color:#34d399;padding:12px 16px;border-radius:8px;font-size:0.875rem;margin-bottom:16px;">✓ Message sent! We'll get back to you within 24 hours.</div>
+          <button type="submit" class="btn-primary" style="width:100%;justify-content:center;">✉ Send Message</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-bottom" style="border-top:none;padding-top:0;">
+        <p class="footer-copyright">© 2024 Music Collaboration Studio. All rights reserved.</p>
+        <div class="footer-legal"><a href="#">Privacy</a><a href="#">Terms</a><a href="index.html">Home</a></div>
+      </div>
+    </div>
+  </footer>
+  <style>.form-label{display:block;font-size:0.85rem;font-weight:600;color:#8892b0;margin-bottom:8px;}</style>
+  <script src="js/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Log In — Music Collaboration Studio</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/login.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+</head>
+<body>
+
+  <div class="auth-bg">
+    <div class="auth-grid"></div>
+    <div class="auth-orb auth-orb-1"></div>
+    <div class="auth-orb auth-orb-2"></div>
+    <div class="auth-orb auth-orb-3"></div>
+  </div>
+
+  <main class="auth-page">
+    <div class="auth-card">
+
+      <div class="auth-logo">
+        <div class="auth-logo-icon">🎵</div>
+        <span class="auth-logo-text">Music Collaboration Studio</span>
+      </div>
+
+      <h1 class="auth-title">Welcome back</h1>
+      <p class="auth-subtitle">Sign in to continue to your studio</p>
+
+      <!-- Message -->
+      <div class="auth-message" id="authMessage" style="display:none;"></div>
+
+      <form class="auth-form" id="loginForm" onsubmit="handleLogin(event)" novalidate>
+
+        <!-- Email -->
+        <div class="auth-form-group">
+          <label class="auth-label" for="email">Email Address</label>
+          <div class="auth-input-wrap">
+            <input
+              type="email"
+              id="email"
+              class="auth-input"
+              placeholder="you@example.com"
+              autocomplete="email"
+              required
+            />
+            <span class="auth-input-icon">📧</span>
+          </div>
+          <div class="auth-field-error" id="emailError"></div>
+        </div>
+
+        <!-- Password -->
+        <div class="auth-form-group">
+          <label class="auth-label" for="password">Password</label>
+          <div class="auth-input-wrap">
+            <input
+              type="password"
+              id="password"
+              class="auth-input"
+              placeholder="Enter your password"
+              autocomplete="current-password"
+              required
+            />
+            <span class="auth-input-icon">🔒</span>
+            <button type="button" class="auth-input-toggle" id="pwToggle" onclick="togglePw()" title="Show/hide password">
+              👁
+            </button>
+          </div>
+          <div class="auth-field-error" id="passwordError"></div>
+        </div>
+
+        <!-- Remember & Forgot -->
+        <div class="auth-row">
+          <label class="auth-remember">
+            <input type="checkbox" class="auth-checkbox" id="rememberMe" />
+            <span class="auth-remember-label">Remember me</span>
+          </label>
+          <a href="#" class="auth-forgot" onclick="handleForgot(event)">Forgot password?</a>
+        </div>
+
+        <!-- Submit -->
+        <button type="submit" class="auth-btn" id="loginBtn">
+          Sign In
+        </button>
+
+        <!-- Divider -->
+        <div class="auth-divider">or</div>
+
+        <!-- Register link -->
+        <p class="auth-link-row">
+          Don't have an account?
+          <a href="register.html" class="auth-link"> Create one free</a>
+        </p>
+
+      </form>
+    </div>
+  </main>
+
+  <script src="js/login.js"></script>
+</body>
+</html>

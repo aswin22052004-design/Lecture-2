@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Register — Music Collaboration Studio</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/login.css" />
+  <link rel="stylesheet" href="css/register.css" />
+</head>
+<body>
+  <div class="auth-bg">
+    <div class="auth-grid"></div>
+    <div class="auth-orb auth-orb-1"></div>
+    <div class="auth-orb auth-orb-2"></div>
+    <div class="auth-orb auth-orb-3"></div>
+  </div>
+
+  <main class="auth-page">
+    <div class="auth-card register-card">
+      <div class="auth-logo">
+        <div class="auth-logo-icon">🎵</div>
+        <span class="auth-logo-text">Music Collaboration Studio</span>
+      </div>
+
+      <h1 class="auth-title">Create your account</h1>
+      <p class="auth-subtitle">Start collaborating for free — no credit card needed</p>
+
+      <div class="auth-message" id="authMessage" style="display:none;"></div>
+
+      <form class="auth-form" id="registerForm" onsubmit="handleRegister(event)" novalidate>
+        <div class="auth-form-group">
+          <label class="auth-label" for="name">Full Name</label>
+          <div class="auth-input-wrap">
+            <input type="text" id="name" class="auth-input" placeholder="Your full name" autocomplete="name" required />
+            <span class="auth-input-icon">👤</span>
+          </div>
+          <div class="auth-field-error" id="nameError"></div>
+        </div>
+
+        <div class="auth-form-group">
+          <label class="auth-label" for="email">Email Address</label>
+          <div class="auth-input-wrap">
+            <input type="email" id="email" class="auth-input" placeholder="you@example.com" autocomplete="email" required />
+            <span class="auth-input-icon">📧</span>
+          </div>
+          <div class="auth-field-error" id="emailError"></div>
+        </div>
+
+        <div class="auth-form-group">
+          <label class="auth-label" for="password">Password</label>
+          <div class="auth-input-wrap">
+            <input type="password" id="password" class="auth-input" placeholder="Min. 6 characters" autocomplete="new-password" required />
+            <span class="auth-input-icon">🔒</span>
+            <button type="button" class="auth-input-toggle" onclick="togglePw('password','pwToggle')" id="pwToggle">👁</button>
+          </div>
+          <div class="password-strength">
+            <div class="strength-bar"><div class="strength-fill" id="strengthFill"></div></div>
+            <span class="strength-label" id="strengthLabel">Enter a password</span>
+          </div>
+          <div class="auth-field-error" id="passwordError"></div>
+        </div>
+
+        <div class="auth-form-group">
+          <label class="auth-label" for="confirmPassword">Confirm Password</label>
+          <div class="auth-input-wrap">
+            <input type="password" id="confirmPassword" class="auth-input" placeholder="Repeat your password" autocomplete="new-password" required />
+            <span class="auth-input-icon">🔐</span>
+            <button type="button" class="auth-input-toggle" onclick="togglePw('confirmPassword','cpwToggle')" id="cpwToggle">👁</button>
+          </div>
+          <div class="auth-field-error" id="confirmError"></div>
+        </div>
+
+        <div class="terms-row">
+          <input type="checkbox" class="terms-checkbox" id="terms" required />
+          <label class="terms-label" for="terms">
+            I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+          </label>
+        </div>
+
+        <button type="submit" class="auth-btn" id="registerBtn">Create Account</button>
+
+        <div class="auth-divider">or</div>
+
+        <p class="auth-link-row">
+          Already have an account? <a href="login.html" class="auth-link"> Sign in</a>
+        </p>
+      </form>
+    </div>
+  </main>
+
+  <script src="js/register.js"></script>
+</body>
+</html>
